@@ -9,7 +9,7 @@ const readInput = () => {
     .concat("input.txt")
     .join(sep)
 
-  return readFileSync(file).toString()
+  return readFileSync(file).toString().split('\n')
 }
 
 module.exports = readInput
