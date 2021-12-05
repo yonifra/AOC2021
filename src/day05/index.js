@@ -1,13 +1,11 @@
 'use strict'
 
+import _ from 'lodash'
 const { parse } = require("path")
 const { test, readInput } = require("../utils")
-import _ from 'lodash'
 
 const prepareInput = (rawInput) => rawInput
-
 const input = prepareInput(readInput())
-
 const parseCoords = input => input.map(item => item.split(' -> ')).map(i => i.map(c => c.split(','))).map(item => item.map(number => number.map(i => parseInt(i))))
 
 const goA = (input) => {
@@ -44,18 +42,33 @@ const goA = (input) => {
     }
   }
 
-  return counter //?
+  return counter
 }
 
 const goB = (input) => {
-  return
+  const coordsList = parseCoords(input)
+  const map = new Map();
+
+  coordsList.forEach(([c1, c2]) => {
+      let [x1, y1] = c1
+      let [x2, y2] = c2
+
+      const xSlope = x2 - x1
+      const ySlope = y2 - y1
+      const length = Math.abs(xSlope) || Math.abs(ySlope)
+      const xFactor = xSlope && xSlope / Math.abs(xSlope)
+      const yFactor = ySlope && ySlope / Math.abs(ySlope)
+
+      for (let i = 0; i <= length; i++) {
+        const x = x1 + i * xFactor
+        const y = y1 + i * yFactor
+        const val = map.get(`${x},${y}`) || 0;
+			  map.set(`${x},${y}`, val + 1);
+      }
+  })
+
+  return [...map.values()].filter(x => x > 1).length
 }
-
-/* Tests */
-
-// test(result, expected)
-
-/* Results */
 
 console.time("Time")
 const resultA = goA(input)
