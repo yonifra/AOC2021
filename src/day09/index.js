@@ -25,8 +25,9 @@ const getMinPoint = ({x,y}, arrayMap) => {
   return -1
 }
 
+const getArrayMap = input => input.map(line => line.split('').map(num => parseInt(num)))
 const findLowPoints = input => {
-  const arrayMap = input.map(line => line.split('').map(num => parseInt(num)))
+  const arrayMap = getArrayMap(input)
   const allMinPoints = []
 
   for(let i = 0; i < arrayMap.length; i++) {
@@ -34,7 +35,7 @@ const findLowPoints = input => {
       const min = getMinPoint({x: j, y: i}, arrayMap)
 
       if (min > -1) {
-        allMinPoints.push(min)
+        allMinPoints.push({x: j, y: i, min})
       }
     }
   }
@@ -44,11 +45,26 @@ const findLowPoints = input => {
 
 const goA = (input) => {
   const allMinPoints = findLowPoints(input)
-  return allMinPoints.map(i => i+1).reduce((a,b) => a+b, 0)
+  return allMinPoints.map(i => i.min+1).reduce((a,b) => a+b, 0)
+}
+
+const calculateBasinAtPoint = (x,y, grid, lowPoint, visitedMap) => {
+  if (!isInBounds(x,y,grid) || grid[x][y] === 9 || grid[x][y] < lowPoint || visitedMap.get(`${x}_${y}`)) {
+    return 0
+  }
+
+  visitedMap.set(`${x}_${y}`, true)
+
+  return 1 + calculateBasinAtPoint(x + 1, y, grid, grid[x][y], visitedMap) + calculateBasinAtPoint(x, y + 1, grid, grid[x][y], visitedMap) + calculateBasinAtPoint(x, y - 1, grid, grid[x][y], visitedMap) + calculateBasinAtPoint(x - 1, y, grid, grid[x][y], visitedMap)
 }
 
 const goB = (input) => {
-  return
+  const seedPoints = findLowPoints(input)
+  const map = getArrayMap(input)
+  const visitedMap = new Map()
+
+  const all = seedPoints.map(pt => calculateBasinAtPoint(pt.x, pt.y, map, pt.min, visitedMap))
+  return all.sort((a, b) => b - a).slice(0,3).reduce((a,b) => a*b, 1);
 }
 
 /* Tests */
