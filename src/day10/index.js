@@ -39,21 +39,57 @@ const getIllegalChar = line => {
     return 'V'
   })
 
-    checkLines.filter(ch => ch !== 'V').flat().forEach(arr => {
-      if (arr !== []) {
-        counter += getScore(arr[0])
-      }
-    })
+  checkLines.filter(ch => ch !== 'V').flat().forEach(arr => {
+    if (arr !== []) {
+      counter += getScore(arr[0])
+    }
+  })
 
   return counter
 }
 
-const getMissingLines = input => {
+const getAutocompleteText = line => {
+  const stack = []
+  const lineAsArr = line.split('')
+  for(let i = 0; i < line.length; i++) {
+    if (Object.keys(pairs).includes(lineAsArr[i])) {
+      stack.push(lineAsArr[i])
+    } else {
+      if (pairs[stack.pop()] !== lineAsArr[i]) {
+        return ''
+      }
+    }
+  }
 
+  return stack.reverse().map(i => pairs[i]).join('')
 }
 
-const getAutocompoleteScore = line => {
+const getMissingLines = input => {
+  return input.map(line => {
+    const suffix = getAutocompleteText(line)
+    if(suffix && suffix != '' && suffix.length > 0) {
+      return getAutocompleteScore(suffix)
+    }
 
+    return []
+  }).filter(arr => arr !== [])
+}
+
+const getAutocompleteScore = line => {
+  let score = 0
+  const lineArr = line.split('')
+  const scoreMap = {
+    ')': 1,
+    ']': 2,
+    '}': 3,
+    '>': 4
+  }
+
+  for(let i = 0; i < lineArr.length; i++) {
+    score += scoreMap[lineArr[i]] + score * 5
+  }
+
+  return score
 }
 
 const goA = (input) => {
@@ -61,9 +97,16 @@ const goA = (input) => {
 }
 
 const goB = (input) => {
-  // const missingLines = getMissingLines(input)
-  // const missingScores = missingLines.map(line => getAutocompleteScore(line))
-  // return missingScores.sort()[missingScores.length / 2]
+  const missingLines = getMissingLines(input)
+  const scores = []
+
+  missingLines.forEach(score => {
+    if (score.length !== 0) {
+      scores.push(score)
+    }
+  })
+
+  return scores.sort((a,b) => a-b)[(scores.length - 1)/ 2]
 }
 
 /* Tests */
