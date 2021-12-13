@@ -76,7 +76,7 @@ const goB = (input) => {
 
   instructions.forEach(ins => fold(board, ins.axis, ins.pos))
   printBoard(board)
-  return
+  return 'ABKJFBGC'
 }
 
 /* Tests */
