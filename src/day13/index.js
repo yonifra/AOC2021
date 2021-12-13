@@ -35,12 +35,47 @@ const fold = (board, coord, pos) => {
   return board
 }
 
+const getInstructions = input => {
+  const instructions = []
+  for (let i = input.indexOf('') + 1; i < input.length; i++) {
+    // fold along x=655
+    const [axis, pos] = input[i].split(' ')[2].split('=')
+    instructions.push({axis, pos: parseInt(pos)})
+  }
+  return instructions
+}
+
+const printBoard = board => {
+  const maxX = 6
+  const maxY = 40
+  const b = []
+
+  for (let i = 0; i < maxX; i++) {
+    b.push([])
+    for(let j = 0; j < maxY; j++) {
+      if (board[`${j}__${i}`]) {
+        b[i].push('#')
+      }
+      else {
+        b[i].push('.')
+      }
+    }
+  }
+
+  b.forEach(line => console.log(line.join('')))
+}
+
 const goA = (input) => {
   const board = parsePoints(input)
   return Object.keys(fold(board, "x", 655)).length
 }
 
 const goB = (input) => {
+  const board = parsePoints(input)
+  const instructions = getInstructions(input)
+
+  instructions.forEach(ins => fold(board, ins.axis, ins.pos))
+  printBoard(board)
   return
 }
 
