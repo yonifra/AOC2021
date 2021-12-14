@@ -1,9 +1,8 @@
 const { test, readInput } = require("../utils")
-
 const prepareInput = (rawInput) => rawInput
-
 const input = prepareInput(readInput())
 const getPolymer = (input) => input[0]
+
 const getRules = (input) => {
   const rules = {}
   input.slice(2).forEach((rule) => {
