@@ -1,5 +1,7 @@
 # Advent of Code 2021 Solutions
 
+![AOC2021](./aoc.jpeg)
+
 ## Intro
 
 These are my solutions for AOC2021 Coding Challenge
