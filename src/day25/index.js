@@ -26,7 +26,7 @@ const moveRight = () => {
 }
 
 const moveDown = () => {
-  const clonedInput = _.cloneDeep(splittedInput)
+  const clonedInput = _.cloneDeep(splittedInput) //?
   const maxY = splittedInput.length
   let moves = 0
 
@@ -49,7 +49,7 @@ const moveDown = () => {
 let splittedInput = input.map(line => line.split(''))
 
 const goA = (input) => {
-  let counter = 0
+  let counter = 1
   while (moveRight() + moveDown() > 0) {
       counter++
   }
