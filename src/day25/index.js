@@ -26,7 +26,7 @@ const moveRight = () => {
 }
 
 const moveDown = () => {
-  const clonedInput = _.cloneDeep(splittedInput) //?
+  const clonedInput = _.cloneDeep(splittedInput)
   const maxY = splittedInput.length
   let moves = 0
 
