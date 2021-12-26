@@ -1,62 +1,59 @@
+const _ = require('lodash')
 const { test, readInput } = require("../utils")
 
 const prepareInput = (rawInput) => rawInput
-
 const input = prepareInput(readInput())
 
-const moveRight = (input) => {
-  const maxX = input[0].length
+const moveRight = () => {
+  const clonedInput = _.cloneDeep(splittedInput)
+  const maxX = splittedInput[0].length
   let moves = 0
 
-  for (let y = 0; y < input.length; y++) {
-    for (let x = 0; x < input[0].length; x++) {
-      const newX = (x+1) % maxX
+  for (let y = 0; y < splittedInput.length; y++) {
+    for (let x = 0; x < splittedInput[0].length; x++) {
+      const newX = (x + 1) % maxX
 
-      if (input[y][x] === '>' && input[y][newX] === '.') {
-        input[y][x] = '.'
-        input[y][newX] = '>'
+      if (splittedInput[y][x] === ">" && splittedInput[y][newX] === ".") {
+        clonedInput[y][x] = "."
+        clonedInput[y][newX] = ">"
         moves++
       }
     }
   }
 
+  splittedInput = clonedInput
   return moves
 }
 
-const moveDown = input => {
-  const maxY = input.length
+const moveDown = () => {
+  const clonedInput = _.cloneDeep(splittedInput)
+  const maxY = splittedInput.length
   let moves = 0
 
-  for (let x = input[0].length - 1; x >= 0; x--) {
-    for (let y = input.length - 1; y >= 0; y--) {
-      const newY = (y+1) % maxY
+  for (let y = 0; y < splittedInput.length; y++) {
+    for (let x = 0; x < splittedInput[0].length; x++) {
+      const newY = (y + 1) % maxY
 
-      if (input[y][x] === 'v' && input[newY][x] === '.') {
-        input[y][x] = '.'
-        input[newY][x] = 'v'
+      if (splittedInput[y][x] === "v" && splittedInput[newY][x] === ".") {
+        clonedInput[y][x] = "."
+        clonedInput[newY][x] = "v"
         moves++
       }
     }
   }
 
+  splittedInput = clonedInput
   return moves
 }
+
+let splittedInput = input.map(line => line.split(''))
 
 const goA = (input) => {
-  input = input.map(line => line.split(''))
-  let done = false
-  let iterations = 0
-
-  while (!done) {
-    iterations++
-    let moves = 0
-    moves += moveRight(input)
-    moves += moveDown(input)
-
-    done = moves === 0
+  let counter = 0
+  while (moveRight() + moveDown() > 0) {
+      counter++
   }
-
-  return iterations
+  return counter
 }
 
 const goB = (input) => {
