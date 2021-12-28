@@ -8,7 +8,6 @@ const solve = (input, digits, values) => {
   let currentDigit = 14
   input.forEach(line => {
     const parts = line.split(' ')
-    console.log(`solving for ${digits}, currently on digit with index ${currentDigit} which is ${JSON.stringify(values)}`)
 
     switch (parts[0]) {
       case 'inp': {
