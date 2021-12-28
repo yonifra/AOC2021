@@ -1,5 +1,6 @@
 const { create } = require("domain")
 const { test, readInput } = require("../utils")
+const _ = require('lodash')
 
 const prepareInput = (rawInput) => rawInput
 
@@ -7,22 +8,15 @@ const input = prepareInput(readInput())
 const createKey = (x,y,z)=> `${x}_${y}_${z}`
 
 const parseLine = (line, ops, bottomLimit = -50, upperLimit = 50) => {
-  let parts = line.split(' ')
-  const op = parts[0]
-  parts = parts[1].split(',')
-  const minX = parseInt(parts[0].split('=')[1].split('..')[0])
-  const maxX = parseInt(parts[0].split('=')[1].split('..')[1])
-  const minY = parseInt(parts[1].split('=')[1].split('..')[0])
-  const maxY = parseInt(parts[1].split('=')[1].split('..')[1])
-  const minZ = parseInt(parts[2].split('=')[1].split('..')[0])
-  const maxZ = parseInt(parts[2].split('=')[1].split('..')[1])
+  const [op, coord] = line.split(' ')
+  const coords = coord.split(',')
 
-  const normalizedMinX = minX < bottomLimit ? bottomLimit : minX
-  const normalizedMaxX = maxX > upperLimit ? upperLimit : maxX
-  const normalizedMinY = minY < bottomLimit ? bottomLimit : minY
-  const normalizedMaxY = maxY > upperLimit ? upperLimit : maxY
-  const normalizedMinZ = minZ < bottomLimit ? bottomLimit : minZ
-  const normalizedMaxZ = maxZ > upperLimit ? upperLimit : maxZ
+  const normalizedMinX = bottomLimit === 0 ? parseInt(coords[0].split('=')[1].split('..')[0]) : _.max([parseInt(coords[0].split('=')[1].split('..')[0]), bottomLimit])
+  const normalizedMaxX = upperLimit === 0 ? parseInt(coords[0].split('=')[1].split('..')[1]) : _.min([parseInt(coords[0].split('=')[1].split('..')[1]), upperLimit])
+  const normalizedMinY = bottomLimit === 0 ? parseInt(coords[1].split('=')[1].split('..')[0]) : _.max([parseInt(coords[1].split('=')[1].split('..')[0]), bottomLimit])
+  const normalizedMaxY = upperLimit === 0 ? parseInt(coords[1].split('=')[1].split('..')[1]) : _.min([parseInt(coords[1].split('=')[1].split('..')[1]), upperLimit])
+  const normalizedMinZ = bottomLimit === 0 ? parseInt(coords[2].split('=')[1].split('..')[0]) : _.max([parseInt(coords[2].split('=')[1].split('..')[0]), bottomLimit])
+  const normalizedMaxZ = upperLimit === 0 ? parseInt(coords[2].split('=')[1].split('..')[1]) : _.min([parseInt(coords[2].split('=')[1].split('..')[1]), upperLimit])
 
   for(let x = normalizedMinX; x <= normalizedMaxX; x++) {
     for(let y = normalizedMinY; y <= normalizedMaxY; y++) {
@@ -35,7 +29,6 @@ const parseLine = (line, ops, bottomLimit = -50, upperLimit = 50) => {
       }
     }
   }
-
 }
 
 const goA = (input) => {
@@ -47,7 +40,7 @@ const goA = (input) => {
 
 const goB = (input) => {
   const ops = {}
-  input.forEach(line => parseLine(line, ops, Number.MIN_VALUE, Number.MAX_VALUE))
+  input.forEach(line => parseLine(line, ops, 0, 0))
 
   return Object.keys(ops).length
 }
