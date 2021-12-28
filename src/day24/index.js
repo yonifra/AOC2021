@@ -62,7 +62,20 @@ const goA = (input) => {
 }
 
 const goB = (input) => {
-  return
+  let digits = 11111111111111
+  let stringDigits = digits.toString().split('')
+
+  while (!solve(input, stringDigits, {x: 0, y: 0, z: 0})) {
+    digits++
+    stringDigits = digits.toString().split('')
+
+    while (stringDigits.includes('0')) {
+      digits++
+      stringDigits = digits.toString().split('')
+    }
+  }
+
+  return digits
 }
 
 /* Tests */
