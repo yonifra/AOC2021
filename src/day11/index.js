@@ -21,7 +21,7 @@ function increment(board, x, y) {
 }
 
 function run(input, steps) {
-  const board = input.map((line) => line.split("").map((x) => +x))
+  const board = input.map((line) => line.split("").map((x) => Number(x)))
   let flashes = 0
   for (let step = 0; step < steps; step++) {
     if (board.every((line) => line.every((octopus) => octopus === 0))) {

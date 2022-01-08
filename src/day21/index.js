@@ -56,7 +56,7 @@ function play(currPlayer, prevPlayer, memory = new Map()) {
   const wins = [0, 0]
   const odds = { 3: 1, 9: 1, 4: 3, 8: 3, 5: 6, 7: 6, 6: 7 }
   for (const key in odds) {
-    let position = currPlayer.position + +key
+    let position = currPlayer.position + Number(key)
     if (position > 10) position -= 10
 
     const next = play(
