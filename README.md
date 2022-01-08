@@ -2,6 +2,8 @@
 
 ![AOC2021](./aoc.jpeg)
 
+[![DeepSource](https://deepsource.io/gh/yonifra/AOC2021.svg/?label=active+issues&show_trend=true&token=ZYv1LRgbhjl5OlWtiWaH9uQ1)](https://deepsource.io/gh/yonifra/AOC2021/?ref=repository-badge)
+
 ## Intro
 
 These are my solutions for AOC2021 Coding Challenge
