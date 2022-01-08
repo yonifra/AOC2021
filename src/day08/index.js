@@ -54,11 +54,11 @@ function getMap(digits) {
 }
 
 function calcNum(output, map) {
-  return +output
+  return Number(output
     .map(d => {
       return map[d.split('').sort().join('')];
     })
-    .join('');
+    .join(''));
 }
 
 function guess(line) {
