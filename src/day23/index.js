@@ -64,7 +64,7 @@ function parse(input) {
   const state = []
   for (let y = 0; y < maze.length; y++) {
     for (let x = 0; x < maze[y].length; x++) {
-      if (maze[y][x].match(/[A-Z]/)) {
+      if (maze[y][x].test(/[A-Z]/)) {
         state.push({ x, y, sign: maze[y][x] })
       }
     }
